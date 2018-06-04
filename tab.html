@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <title>Document</title>
+    <style>
+        .selected {
+            background: red;
+        }
+        .hide {
+            display: none;
+        }
+        .selected-item {
+            background: red;
+        }
+    </style>
+</head>
+<body>
+    <ul class="tab"></ul>
+    <div class="box">
+        <ul>
+            <li></li>
+        </ul>
+    </div>
+    <script>
+        $(function(){
+            var res = {
+                "code": 100,
+                "msg": "处理成功",
+                "extend": {
+                    "dayTimeAllow": [
+                        {
+                            "day": "2018-05-18",
+                            "times": [
+                                {
+                                    "time": "11:00",
+                                    "allow": 1
+                                },
+                                {
+                                    "time": "12:00",
+                                    "allow": 0
+                                },
+                                {
+                                    "time": "13:00",
+                                    "allow": 1
+                                },
+                                {
+                                    "time": "14:00",
+                                    "allow": 0
+                                },
+                                {
+                                    "time": "15:00",
+                                    "allow": 0
+                                },
+                                {
+                                    "time": "16:00",
+                                    "allow": 0
+                                }
+                            ]
+                        },
+                        {
+                            "day": "2018-05-25",
+                            "times": [
+                                {
+                                    "time": "11:00",
+                                    "allow": 1
+                                },
+                                {
+                                    "time": "11:00",
+                                    "allow": 1
+                                },
+                                {
+                                    "time": "11:00",
+                                    "allow": 1
+                                },
+                                {
+                                    "time": "11:00",
+                                    "allow": 1
+                                },
+                                {
+                                    "time": "11:00",
+                                    "allow": 1
+                                },
+                                {
+                                    "time": "11:00",
+                                    "allow": 1
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+            // 页面渲染开始
+            var selectedTabStr = ""
+            var norTabStr = ""
+            var firstSelectedTimesStr = ""
+            for(var i=0;i<res.extend.dayTimeAllow.length;i++){
+                //默认显示第一个tab
+                if(i == 0){
+                    selectedTabStr+='<li class="selected">'+res.extend.dayTimeAllow[i].day+'</li>';
+                    $(".tab").append(selectedTabStr)
+                    //选项处理
+                    for(var j=0;j<res.extend.dayTimeAllow[i].times.length;j++){
+                        //默认显示的第一个tab选项内容
+                        if(res.extend.dayTimeAllow[i].times[j].allow == 0){
+                            firstSelectedTimesStr+='<li data-allow="'+res.extend.dayTimeAllow[i].times[j].allow+'">'+res.extend.dayTimeAllow[i].times[j].time+'</li>'
+                        }else {
+                            firstSelectedTimesStr+='<li class="selected" data-allow="'+res.extend.dayTimeAllow[i].times[j].allow+'">'+res.extend.dayTimeAllow[i].times[j].time+'</li>'
+                        }
+                        
+                    }
+                }else {
+                    norTabStr+='<li>'+res.extend.dayTimeAllow[i].day+'</li>'
+                }
+            }
+            //添加其余不显示的
+            $(".tab").append(norTabStr)
+            //添加第一个选项内容
+            $(".box ul").html(firstSelectedTimesStr)
+            //页面渲染完毕
+
+            //添加导航栏点击事件并且渲染选项
+            $("body").on("click",".tab li",function(){
+                $(this).addClass("selected").siblings().removeClass("selected");
+                var index = $(this).index();
+                var times = res.extend.dayTimeAllow[index].times;
+                var timesLength = times.length;
+                var selectStr = "";
+                for(var l=0;l<timesLength;l++){
+                    if(times[l].allow == 0){
+                        selectStr+='<li data-allow="'+times[l].allow+'">'+times[l].time+'</li>'
+                    }else {
+                        selectStr+='<li class="selected" data-allow="'+times[l].allow+'">'+times[l].time+'</li>'
+                    }
+                    
+                }
+                $(".box ul").html(selectStr)
+            });
+
+            //选项选中
+            $("body").on("click",".box ul li",function(){
+                var that = $(this);
+                var allow = that.data("allow");
+                console.log(allow);
+                if(that.hasClass("selected")){
+                    alert("当前时间已经选择过了，不能再选择了");
+                    return false;
+                }else {
+                    that.addClass("selected");
+                }
+            })
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>预定时间</title>
+	<script type="text/javascript" src="./js/vue.js"></script>
+	<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.0/jquery.js"></script>
+	<link rel="stylesheet" type="text/css" href="./css/reserve.css">
+</head>
+<body>
+	<div id="main">
+		<div class="date" v-for="item in res.extend.dayTimeAllow" :class="item.selected ? 'selected':''" @click="clickDay(item)">{{item.day}}</div>
+		<div class="time">
+			<ul>
+				<li v-for="item in timeActive" :class="item.allow==1? 'selected':''" @click="clickTime(item)">{{item.time}}</li>
+			</ul>
+		</div>
+	</div>
+
+
+
+	<script src="./js/reserve.js"></script>
+</body>
+</html>
